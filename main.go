@@ -46,7 +46,6 @@ func init() {
 
 func main() {
 	entryLog := log.Log.WithName("entrypoint")
-
 	// Setup a Manager
 	entryLog.Info("setting up manager")
 	mgr, err := ctrl.NewManager(config.GetConfigOrDie(), ctrl.Options{

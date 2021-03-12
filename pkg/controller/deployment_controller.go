@@ -3,6 +3,7 @@ package controller
 import (
 	"context"
 	"fmt"
+	"github.com/emreodabas/image-decorator-controller/pkg/containerimage"
 	appsv1 "k8s.io/api/apps/v1"
 	"k8s.io/apimachinery/pkg/api/errors"
 	"sigs.k8s.io/controller-runtime/pkg/client"
@@ -14,6 +15,7 @@ type ReconcileDeployment struct {
 	Client client.Client
 }
 
+// !! Kubebuilder will read this lines and generate related resources !!
 // +kubebuilder:rbac:groups=apps,resources=deployments,verbs=get;list;watch;create;update;patch;delete
 // +kubebuilder:rbac:groups=apps,resources=deployments/status,verbs=get;update;patch
 
@@ -24,7 +26,7 @@ func (r *ReconcileDeployment) Reconcile(ctx context.Context, request reconcile.R
 
 	log := log.FromContext(ctx)
 
-	// Fetch the ReplicaSet from the cache
+	// Fetch the Deployment from the cache
 	deployment := &appsv1.Deployment{}
 	err := r.Client.Get(ctx, request.NamespacedName, deployment)
 	if errors.IsNotFound(err) {
@@ -37,21 +39,21 @@ func (r *ReconcileDeployment) Reconcile(ctx context.Context, request reconcile.R
 	}
 
 	// Print the Deployment
-	log.Info("Reconciling deployment", "container name", deployment.Spec.Template.Spec.Containers[0].Name)
-
-	// Set the label if it is missing
-	if deployment.Labels == nil {
-		deployment.Labels = map[string]string{}
+	containers := deployment.Spec.Template.Spec.Containers
+	for i, container := range containers {
+		log.Info("Reconciling deployment", "containerimage name", container.Name)
+		//TODO take prefix as variable
+		imagePath, err := containerimage.CloneImage(container.Image, "kubermatico/")
+		if err != nil {
+			return reconcile.Result{}, nil
+		}
+		containers[i].Image = imagePath
 	}
-	if deployment.Labels["hello"] == "world" {
-		return reconcile.Result{}, nil
-	}
-
-	// Update the ReplicaSet
-	deployment.Labels["hello"] = "world"
-	err = r.Client.Update(context.TODO(), deployment)
+	//re assign updated containers to deployment
+	deployment.Spec.Template.Spec.Containers = containers
+	err = r.Client.Update(ctx, deployment)
 	if err != nil {
-		return reconcile.Result{}, fmt.Errorf("could not write ReplicaSet: %+v", err)
+		return reconcile.Result{}, fmt.Errorf("could not write Deployment: %+v", err)
 	}
 
 	return reconcile.Result{}, nil
