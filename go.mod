@@ -9,6 +9,7 @@ require (
 	github.com/go-openapi/validate v0.19.5 // indirect
 	github.com/google/go-containerregistry v0.4.1
 	github.com/gophercloud/gophercloud v0.1.0 // indirect
+	github.com/spf13/viper v1.7.0
 	github.com/ugorji/go/codec v0.0.0-20181204163529-d75b2dcb6bc8 // indirect
 	github.com/xordataexchange/crypt v0.0.3-0.20170626215501-b2862e3d0a77 // indirect
 	gonum.org/v1/netlib v0.0.0-20190331212654-76723241ea4e // indirect

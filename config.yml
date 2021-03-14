@@ -1,0 +1,6 @@
+BACKUP_REGISTRY_ADDRESS: "kubermatico/"
+REQUEUE_DURATION: 5000
+IGNORED_NS: "kube-system,kube-public,ignore-ns"
+ACCESS_TOKEN: "a5c4c4a4-27f8-40af-9662-a0391bee1d6d"
+USERNAME: "kubermatico"
+PASSWORD: "$pus@L&3G?!ewTK"
