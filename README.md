@@ -2,7 +2,8 @@
 ###### Firstly this project structure is created with [kubebuilder](https://github.com/kubernetes-sigs/kubebuilder) 
 Kubernetes Controller for importing external images to own/local repository  and redeploy workload
 
-Docker account -> https://hub.docker.com/u/kubermatico
+- Docker account -> https://hub.docker.com/u/kubermatico
+- Demo run on the latest Kind cluster (kind v0.10.0 go1.15.7 linux/amd64)
 
 [![asciicast](https://asciinema.org/a/xnG9oES86DxMzop2hr8rD7zlp.svg)](https://asciinema.org/a/xnG9oES86DxMzop2hr8rD7zlp)
 
