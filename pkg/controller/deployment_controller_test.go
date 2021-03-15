@@ -22,7 +22,7 @@ func TestReconcileDeployment(t *testing.T) {
 	if err == nil {
 		t.Errorf("Error is expected but not found")
 	}
-	if reconcile.Requeue != true && reconcile.RequeueAfter != getReconciler().RequeueDuration {
-		t.Errorf("Requeue is expected with given duration")
+	if reconcile.Requeue == true || reconcile.RequeueAfter > 0 {
+		t.Errorf("Requeue is not expected for given ")
 	}
 }
