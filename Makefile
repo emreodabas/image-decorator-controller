@@ -66,6 +66,9 @@ docker-build: test
 docker-push:
 	docker push ${IMG}
 
+docker-publish:
+	$(MAKE) docker-build
+	$(MAKE) docker-push
 
 # find or download controller-gen
 # download controller-gen if necessary

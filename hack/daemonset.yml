@@ -1,0 +1,30 @@
+apiVersion: apps/v1
+kind: DaemonSet
+metadata:
+  labels:
+    app: test-daemonset
+    k8s-app: test-daemonset
+    tier: node
+  name: test-daemonset
+  namespace: test
+spec:
+  selector:
+    matchLabels:
+      app: test-daemonset
+  template:
+    metadata:
+      labels:
+        app: test-daemonset
+        k8s-app: test-daemonset
+        tier: node
+    spec:
+      containers:
+      - image: nginx
+        name: test-daemonset
+        resources:
+          limits:
+            cpu: 100m
+            memory: 50Mi
+          requests:
+            cpu: 100m
+            memory: 50Mi
