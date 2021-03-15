@@ -24,7 +24,7 @@ type ContainerRepository struct {
 
 func (cr *ContainerRepository) pullImage(src string) (v1.Image, error) {
 
-	if strings.Contains(src, "gcr") {
+	if strings.Contains(src, "gcr.io") {
 		pull, err := crane.Pull(src, crane.WithAuthFromKeychain(gcrane.Keychain))
 		if err != nil {
 			logger.Error(err, "Error is occur while pulling image %s ", src)

@@ -36,7 +36,7 @@ func (r *ReconcileDaemonSet) Reconcile(ctx context.Context, request reconcile.Re
 	daemonSet := &appsv1.DaemonSet{}
 	err := r.DaemonSet.Client.Get(ctx, request.NamespacedName, daemonSet)
 	if err != nil {
-		return reconciler.requeueMessage(fmt.Errorf("could not fetch DaemonSet: %+v", err))
+		return reconciler.errorWithoutRequeue(fmt.Errorf("could not fetch DaemonSet: %+v", err))
 	}
 	// Print the DaemonSet
 	containers := daemonSet.Spec.Template.Spec.Containers

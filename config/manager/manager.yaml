@@ -26,6 +26,8 @@ spec:
       - envFrom:
         - configMapRef:
             name: controller-manager-config
+        - secretRef:
+            name: controller-manager-secret
         command:
         - /manager
         args:
@@ -45,13 +47,21 @@ apiVersion: v1
 data:
   BACKUP_REGISTRY_ADDRESS: "kubermatico/"
   REQUEUE_DURATION: "5000"
-  IGNORED_NS: "kube-system,kube-public,ignore-ns"
-  ACCESS_TOKEN: "a5c4c4a4-27f8-40af-9662-a0391bee1d6d"
-  USERNAME: "kubermatico"
-  PASSWORD: "$pus@L&3G?!ewTK"
+  IGNORED_NS: "kube-system,kube-builder-system"
+  LEADER_ELECTION: "true"
+  LEADER_ELECTION_NS: "kube-builder-system"
 kind: ConfigMap
 metadata:
   labels:
     control-plane: controller-manager
   name:  controller-manager-config
   namespace: system
+---
+apiVersion: v1
+data:
+  ACCESS_TOKEN: YTVjNGM0YTQtMjdmOC00MGFmLTk2NjItYTAzOTFiZWUxZDZk
+  PASSWORD: QEwmM0c/XCFld1RL
+  USERNAME: a3ViZXJtYXRpY28=
+kind: Secret
+metadata:
+  name: controller-manager-secret

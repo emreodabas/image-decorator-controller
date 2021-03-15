@@ -13,11 +13,12 @@ type ReconcileDeployment struct {
 	Deployment Reconciler
 }
 
-// !! Kubebuilder will read this lines and generate related resources !!
 // +kubebuilder:rbac:groups=apps,resources=deployments,verbs=get;list;watch;create;update;patch
 // +kubebuilder:rbac:groups=apps,resources=deployments/status,verbs=get;update;patch
+// for non grouped deployments and pods
 // +kubebuilder:rbac:groups=\ ,resources=deployments,verbs=get;list;watch;create;update;patch
 // +kubebuilder:rbac:groups=\ ,resources=deployments/status,verbs=get;update;patch
+// +kubebuilder:rbac:groups=\ ,resources=pods,verbs=get;list;watch;create;update;patch
 
 // Implement reconcile.Reconciler so the controller can reconcile objects
 var (
@@ -36,7 +37,7 @@ func (r *ReconcileDeployment) Reconcile(ctx context.Context, request reconcile.R
 	deployment := &appsv1.Deployment{}
 	err := r.Deployment.Client.Get(ctx, request.NamespacedName, deployment)
 	if err != nil {
-		return reconciler.requeueMessage(fmt.Errorf("could not fetch deployment: %+v", err))
+		return reconciler.errorWithoutRequeue(fmt.Errorf("could not fetch deployment: %+v", err))
 	}
 	// Print the Deployment
 	containers := deployment.Spec.Template.Spec.Containers

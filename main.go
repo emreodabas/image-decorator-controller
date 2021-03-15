@@ -27,11 +27,13 @@ import (
 	_ "k8s.io/client-go/plugin/pkg/client/auth/gcp"
 	"k8s.io/client-go/rest"
 	"k8s.io/client-go/tools/clientcmd"
+	"math/rand"
 	"os"
 	ctrl "sigs.k8s.io/controller-runtime"
 	"sigs.k8s.io/controller-runtime/pkg/log"
 	"sigs.k8s.io/controller-runtime/pkg/log/zap"
 	"sigs.k8s.io/controller-runtime/pkg/manager/signals"
+	"strconv"
 	"strings"
 	"time"
 )
@@ -48,16 +50,17 @@ func init() {
 	clientgoscheme.AddToScheme(scheme)
 	setVariables()
 	// +kubebuilder:scaffold:scheme
-
 }
 
 func main() {
 	// Setup a Manager
 	logger.Info("setting up manager")
 	mgr, err := ctrl.NewManager(getKubeConfig(), ctrl.Options{
-		Scheme:         scheme,
-		Port:           9443,
-		LeaderElection: false,
+		Scheme:                  scheme,
+		Port:                    9443,
+		LeaderElection:          viper.GetBool("LEADER_ELECTION"),
+		LeaderElectionID:        "leaderelectionid" + strconv.Itoa(rand.Int()),
+		LeaderElectionNamespace: viper.GetString("LEADER_ELECTION_NS"),
 	})
 	if err != nil {
 		logger.Error(err, "unable to set up overall controller manager")

@@ -14,6 +14,9 @@ type Reconciler struct {
 	BackupRegistry    *containerimage.ContainerRepository
 }
 
+// for enabling leader election
+// +kubebuilder:rbac:groups=coordination.k8s.io,resources=leases,verbs=get;list;watch;create;update;patch
+
 func (r *Reconciler) isIgnoredNamespace(name string) bool {
 	for _, ns := range r.IgnoredNamespaces {
 		if ns == name {
@@ -29,4 +32,8 @@ func (r *Reconciler) successMessage() (reconcile.Result, error) {
 
 func (r *Reconciler) requeueMessage(err error) (reconcile.Result, error) {
 	return reconcile.Result{Requeue: true, RequeueAfter: r.RequeueDuration}, err
+}
+
+func (r *Reconciler) errorWithoutRequeue(err error) (reconcile.Result, error) {
+	return reconcile.Result{Requeue: false}, err
 }

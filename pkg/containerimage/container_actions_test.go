@@ -14,6 +14,7 @@ import (
 var (
 	publicImageNames = []string{"nginx", "busybox", "alpine"}
 	privateImageName = "kubermatico/private-image"
+	publicGCRImage   = "gcr.io/kubebuilder/kube-rbac-proxy:v0.5.0"
 )
 
 func TestCloneImage(t *testing.T) {
@@ -59,6 +60,16 @@ func TestCloneImageWithWrongSource(t *testing.T) {
 func TestPullImageForPublic(t *testing.T) {
 	src := getRandomSourceOfPublicImage()
 	image, err := getTestContainerRepository().pullImage(src)
+	if err != nil {
+		t.Errorf("No error is expected but found %v", err)
+	}
+	if image == nil {
+		t.Errorf("Expected non nil image but return nil image")
+	}
+}
+
+func TestPullImageForGCRPublic(t *testing.T) {
+	image, err := getTestContainerRepository().pullImage(publicGCRImage)
 	if err != nil {
 		t.Errorf("No error is expected but found %v", err)
 	}
