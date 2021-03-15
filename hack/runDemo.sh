@@ -63,8 +63,8 @@ read -p "$YLW↓ Enter to continue ↓$NC"
 
 echo "$GREEN >>>>installing controller to k8s !! need kustomize !!$NC"
 ## !!Optional
-echo "$GREEN >>make docker-publish -C ../$NC"
-make docker-publish -C ../
+#echo "$GREEN >>make docker-publish -C ../$NC"
+#make docker-publish -C ../
 echo "$GREEN >>make deploy -C ../ $NC"
 make deploy -C ../
 
