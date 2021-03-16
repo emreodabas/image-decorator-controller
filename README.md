@@ -10,9 +10,9 @@ Kubernetes Controller for importing external images to own/local repository  and
  ### Run Demo
  - `git clone https://github.com/emreodabas/image-decorator-controller` 
  - `cd /image-decorator-controller && go get && /hack/runDemo.sh ` 
- removing sample data 
+ - removing sample data 
  - `hack/resetWorkloads.sh`
- check sample data states
+ - check sample data states
  - `hack/checkStates.sh`
 ### Installation
 #### localhost
